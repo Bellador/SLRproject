@@ -1,0 +1,105 @@
+\section{Appendix: Search terms}\label{appendix_search_terms}
+
+The following list contains the search terms used to query the scientific databases (e.g. Scopus) for matching publications. Search terms for which our research group did not possess the necessary competences were neglected, particularly in the field of diseases and substance misuse. On the other hand, missing but from our perspective relevant search terms regarding human well-being were added:
+
+1. (outdoor OR nature) AND recreation (SDG3)
+2. work AND life AND balance (SDG3)
+3. mental health (?) - no, too many returns (2592)
+4. (landscape OR urban*) AND (green* OR plan*) (SDG11) -> integrated in: (green* OR urban* OR rural* OR region* OR landscape) AND (develop* OR plan* OR development plan)
+
+<UGC>
+citizen science collective sens*
+citizen science
+citizen sensing
+community-based monitoring
+community-based participatory research
+participatory sensing
+participatory action research
+participatory gis
+PPGIS
+volunteer monitoring
+Web 2.0
+Neogeograph*
+volunteered geograph*
+vgi
+crowdsourc*
+crowd-sourc*
+crowd sourc*
+user-generated content*
+user generated content*
+ugc
+social media
+gisience
+
+<SDG3>
+(outdoor OR nature) AND recreation
+work* AND life* AND balance
+sdg 3
+target 3.6
+death AND (road OR traffic)
+indicat* 3.6.1
+(chemical* OR air OR water OR soil) AND (pollution OR contamination)
+target 3.9
+(household OR ambient) AND air pollution
+indicat* 3.9.1
+unsafe AND (water OR sanitation OR hygiene)
+indicat* 3.9.2
+uninten* AND poison*
+indicat* 3.9.3
+
+<SDG11>
+urban* AND green*
+sdg 11
+sustainable cit*
+sustainable communit*
+affordable hous*
+target 11.1
+slums
+informal settlement*
+inadequate hous*
+indicat* 11.1.1
+target 11.2
+access AND transport AND public
+indicat* 11.2.1
+urban* AND (inclus* OR sustain*)
+particip* plan* AND (urban OR settlement)
+target 11.3
+land consumption
+indicat* 11.3.1
+particip* AND (urban plan* OR urban manage*)
+indicat* 11.3.2
+target 11.4
+(conserv* OR preserv* OR protect* OR safeguard*) AND (cultur* OR natur*) AND heritage
+indicat* 11.4.1
+target 11.5
+disaster AND (manage* OR help* OR support*)
+indicat* 11.5.1
+infrastruct* AND disaster
+indicat* 11.5.2
+environ* AND impact * AND (urban OR cit* OR municip*)
+target 11.6
+solid waste AND (urban OR cit* OR municip*)
+indicat* 11.6.1
+particulate matter
+PM2.5
+PM10
+PM
+indicat* 11.6.2
+target 11.7
+(green OR public OR open) AND (place* OR space*)
+indicat* 11.7.1
+sex* harass*
+indicat* 11.7.2
+(green* OR urban* OR rural* OR region* OR landscape) AND (develop* OR plan* OR development plan)
+target 11.a
+(urban OR integrat*) AND polic*
+indicat* 11.a.1
+resource efficien*
+(mitigat* OR adapt*) AND climate change
+(resilienc* OR risk manage*) AND disaster
+target 11.b
+disaster AND risk AND reduction
+indicat* 11.b.1
+indicat* 11.b.2
+(sustain* OR resili*) AND build*
+target 11.c
