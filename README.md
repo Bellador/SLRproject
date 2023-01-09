@@ -4,4 +4,4 @@ We identified 526 relevant publications in Scopus, for each of which we extracte
 Additionally, we classified data sources based on their use in monitoring drivers, pressures, states, impacts or responses with respect to SDGs.
 
 ## Citation
-<to be added>
+-- to be added --
