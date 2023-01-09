@@ -57,10 +57,6 @@ def query_result_return(conn, query):
     with conn.cursor() as cursor:
         cursor.execute(query)
         rows = cursor.fetchall()
-        # copy query to CSV output
-        # with open(self.csv_output_path, 'w', encoding='utf-8') as f:
-        #     cursor.copy_expert(outputquery, f)
-        # print("Export file created at: {}".format(self.csv_output_path))
         return np.array(rows)
 
 def ugc_sources_to_latex(ugc_source_counter):
@@ -258,13 +254,6 @@ def plot_ugc_sources_by_topic():
             return match
 
     rows = query_result_return(conn, "select ugc_source, query, source from literature where (decision_r_1 = '1' or decision_r_2 = '1') and subtype != 'Review';")
-
-    # for index, row in enumerate(rows, 1):
-    #     try:
-    #         test = [[row[0].lower().replace(' ', '').split(';'), row[1], row[2]]]
-    #     except Exception as e:
-    #         print(index)
-    #     index += 1
     rows = np.array([[row[0].lower().replace(' ', '').split(';'), row[1], row[2]] for row in rows])
     rows = np.array([[list(map(str.strip, row[0])), row[1], row[2]] for row in rows if row[1] is not None])
     # extract query term which resembles the sdg relevant keyword for which the paper was extracted
@@ -273,21 +262,7 @@ def plot_ugc_sources_by_topic():
     '''
     1. match sdg search terms of accepted papers with the complete list used for querying Scopus and see where gaps exist
     '''
-    # sdg_terms_of_accepted_papers = [row[1] for row in rows]
-    # import sdg target search terms that were used for the SLR
-    # sdg_search_terms = load_search_terms()
     search_terms_per_target_dict = load_search_terms_per_target()
-    # add all initial sdg terms used for search into dictionary, afterwards count accepted papers for each topic
-    # first merge the two lists for sdg 3 and sdg 11
-    # sdg_3_list = sdg_search_terms['<SDG3>']
-    # sdg_11_list = sdg_search_terms['<SDG11>']
-    # sdg_search_terms_merged = sdg_3_list + sdg_11_list
-    # sdg_search_term_dict = dict.fromkeys(sdg_search_terms_merged, 0)
-
-    # create new dictionary to hold the amount of accepted paper for each target according to the search terms that describe the targets
-    # and the ugc_sources related to the targets
-    # hold dictionaries with the keys: count:, ugc_sources:
-
     # creates a nested default dictionary
     papers_per_target = defaultdict(lambda: {'count': 0, 'ugc_sources': []})
     #papers_per_target = dict.fromkeys(search_terms_per_target_dict.values())
@@ -378,7 +353,6 @@ def plot_ugc_sources_by_topic_revamped_sankeyplot():
     '''
     OUTPUT_HTML = './plots/ugc_sources_by_topic_sankeyplot.html'
     OUTPUT_PNG = './plots/ugc_sources_by_topic_sankeyplot.jpg'
-    OUTPUT_SVG = './plots/ugc_sources_by_topic_sankeyplot.svg'
 
     term_citizen_science = 'citizen science'
     top_sources_in_figure = 13 # + citizen science added separatly below
@@ -442,23 +416,6 @@ def plot_ugc_sources_by_topic_revamped_sankeyplot():
                         ugc_per_target_dict[(ugc_source, target)] += 1
                     else:
                         ugc_per_target_dict[('other', target)] += 1
-
-    # for target, target_dict in papers_per_target.items():
-    #     if target not in targets_to_exclude:
-    #         top_ugc_sources_counter = Counter(target_dict['ugc_sources'])
-    #         total_ugc_sources_count = len(target_dict['ugc_sources'])
-    #         total_top_ugc_sources_count = 0
-    #         for top_source in overall_most_common_ugc_list:
-    #             top_source_count_in_this_target = top_ugc_sources_counter[top_source]
-    #             # add it to the total_top_ugc_sources_count to substract it later from the overall total count of ugc sources for the given target
-    #             total_top_ugc_sources_count += top_source_count_in_this_target
-    #             row = [target, top_source, top_source_count_in_this_target]  # IMPORTANT: ugc_source is a list, taking only the first element is an approximation
-    #             df.loc[index] = row
-    #             index += 1
-    #         # add the 'other' class to the bar graph - data sources that are not in the top X
-    #         row = [target, 'other', (total_ugc_sources_count - total_top_ugc_sources_count)]
-    #         df.loc[index] = row
-    #         index += 1
 
     # convert final dict to df for further manipulation
     rows_to_insert_into_df = []
@@ -687,7 +644,6 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
     '''
     OUTPUT_HTML = './plots/ugc_sources_by_topic_stackedbar.html'
     OUTPUT_PNG = './plots/ugc_sources_by_topic_stackedbar.jpg'
-    OUTPUT_SVG = './plots/ugc_sources_by_topic_stackedbar.svg'
 
     term_citizen_science = 'citizen science'
     top_sources_in_figure = 10 # + citizen science added seperatly below
@@ -717,12 +673,6 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
 
     rows = query_result_return(conn, "select ugc_source, query, source from literature where (decision_r_1 = '1' or decision_r_2 = '1') and subtype != 'Review';")
 
-    # for index, row in enumerate(rows, 1):
-    #     try:
-    #         test = [[row[0].lower().replace(' ', '').split(';'), row[1], row[2]]]
-    #     except Exception as e:
-    #         print(index)
-    #     index += 1
     rows = np.array([[row[0].lower().replace(' ', '').split(';'), row[1], row[2]] for row in rows])
     rows = np.array([[list(map(str.strip, row[0])), row[1], row[2]] for row in rows if row[1] is not None])
     # extract query term which resembles the sdg relevant keyword for which the paper was extracted
@@ -731,10 +681,7 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
     sdg_terms_of_accepted_papers = np.array([[check_cs(row[0]), row[1]] for row in sdg_terms_of_accepted_papers])
     sdg_terms_of_accepted_papers = fix_different_data_source_names(sdg_terms_of_accepted_papers)
     # just for fetching the overall most common data sources
-    # ['twitter', 'sina weibo', 'facebook', 'flickr', 'socialmedia-notfurtherspecified', 'openstreetmap(osm)', 'instagram', 'foursquare', 'googletrends', 'youtube', 'healthmap', 'ushahidi', 'strava']
     overall_most_common_ugc_list = [source[0] for source in Counter([item for list_ in sdg_terms_of_accepted_papers for item in list_[0]]).most_common(top_sources_in_figure)]
-    # overall_most_common_ugc_list_counter = Counter([item for list_ in sdg_terms_of_accepted_papers for item in list_[0]]).most_common(len(sdg_terms_of_accepted_papers))
-    # # output list of all ugc sources in a latex format
     # ugc_sources_to_latex(overall_most_common_ugc_list_counter)
     # add citizen science also to the categories that should appear in the figure if not already present
     if term_citizen_science not in overall_most_common_ugc_list:
@@ -742,21 +689,7 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
     '''
     1. match sdg search terms of accepted papers with the complete list used for querying Scopus and see where gaps exist
     '''
-    # sdg_terms_of_accepted_papers = [row[1] for row in rows]
-    # import sdg target search terms that were used for the SLR
-    # sdg_search_terms = load_search_terms()
     search_terms_per_target_dict = load_search_terms_per_target()
-    # add all initial sdg terms used for search into dictionary, afterwards count accepted papers for each topic
-    # first merge the two lists for sdg 3 and sdg 11
-    # sdg_3_list = sdg_search_terms['<SDG3>']
-    # sdg_11_list = sdg_search_terms['<SDG11>']
-    # sdg_search_terms_merged = sdg_3_list + sdg_11_list
-    # sdg_search_term_dict = dict.fromkeys(sdg_search_terms_merged, 0)
-
-    # create new dictionary to hold the amount of accepted paper for each target according to the search terms that describe the targets
-    # and the ugc_sources related to the targets
-    # hold dictionaries with the keys: count:, ugc_sources:
-
     # creates a nested default dictionary
     papers_per_target = defaultdict(lambda: {'count': 0, 'ugc_sources': []})
     papers_with_multiple_data_source = 0
@@ -794,14 +727,6 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
         'foursquare': color_pallet[9 * step],
         'other': color_pallet[10 * step]
     }
-    # ugc_source_figure_color_dict = {
-    #     'flickr': '#ff7f00',
-    #     'citizen science': '#4daf4a',
-    #     'sina weibo': '#e41a1c',
-    #     'twitter': '#377eb8',
-    #     'facebook': '#984ea3',
-    #     'other': '#ffff33'
-    # }
 
     df = pd.DataFrame(columns=['target', 'ugc_sources', 'count'])
     # append years and their top ugc sources as rows to df
@@ -833,23 +758,6 @@ def plot_ugc_sources_by_topic_revamped_stackedbar():
     # sort df
     df.sort_values(by=['target', 'count'], inplace=True, ascending=False)
     # dictionary that assigns legible names to specific targets for figure axis labeling
-    target_name_dict_OLD = {
-        '11.1': 'urban inequality',
-        '11.2': 'mobility',
-        '11.3': 'sustainable urban planning',
-        '11.4': 'cultural and natural heritage protection',
-        '11.5': 'disaster impact',
-        '11.6': 'air and water quality',
-        '11.7': 'green and public space',
-        '11.a': 'development planning',
-        '11.b': 'disaster risk reduction',
-        '3.3': 'disease monitoring',
-        '3.4': 'mental health and well-being',
-        '3.5': 'substance abuse',
-        '3.6': 'traffic accidents',
-        '3.8': 'health monitoring',
-        '3.9': 'pollution'
-    }
     target_name_dict = {
         '11.1': 'urban inequality',
         '11.2': 'mobility',
@@ -960,105 +868,6 @@ def plot_ugc_sources_by_year():
                 new_source.append(element)
         return new_source
 
-    # def fix_different_data_source_names_(rows):
-    #     '''
-    #     if ugc sources appear in different variations and names it will be homonised here.
-    #     E.g. sina weibo, weibo, sina..
-    #     also fix empty string data sources
-    #     :return:
-    #     '''
-    #     weibo_pattern = r'(weibo|sina)'
-    #     google_pattern_1 = r'(google)'
-    #     google_pattern_2 = r'(trend|search)'
-    #     geo_wiki_pattern_1 = r'(geo)'
-    #     geo_wiki_pattern_2 = r'(wiki)'
-    #     osm_pattern = r'(openstreet)'
-    #     strava_pattern = r'(strava)'
-    #     facebook_pattern = r'(facebook)'
-    #     tecent_pattern = r'(tecent)'
-    #     twitter_pattern = r'(twitter)'
-    #     healthmap_pattern = r'(healthmap)'
-    #     flickr_pattern = r'(flickr)'
-    #     wikidata_pattern = r'(wikidata)'
-    #     wikiloc_pattern = r'(wikiloc)'
-    #
-    #     fixed_rows = []
-    #     for row in rows:
-    #         ugc_sources = row[0]
-    #         sdg_term = row[1]
-    #         year = row[2]
-    #         fixed_ugc_sources = []
-    #         for source in ugc_sources:
-    #             if source != '':
-    #                 try:
-    #                     re.search(weibo_pattern, source).group(0)
-    #                     # homogeniase to sina weibo
-    #                     source = 'sina weibo'
-    #                 except:
-    #                     try:
-    #                         re.search(google_pattern_1, source).group(0)
-    #                         re.search(google_pattern_2, source).group(0)
-    #                         # homogeniase to google
-    #                         source = 'google trends'
-    #                     except:
-    #                         try:
-    #                             re.search(geo_wiki_pattern_1, source).group(0)
-    #                             re.search(geo_wiki_pattern_2, source).group(0)
-    #                             # homogeniase to geo-wiki.org
-    #                             source = 'geo wiki'
-    #                         except:
-    #                             try:
-    #                                 re.search(osm_pattern, source).group(0)
-    #                                 # homogeniase to osm
-    #                                 source = 'openstreetmap (osm)'
-    #                             except:
-    #                                 try:
-    #                                     re.search(strava_pattern, source).group(0)
-    #                                     # homogeniase to strava
-    #                                     source = 'strava'
-    #                                 except:
-    #                                     try:
-    #                                         re.search(facebook_pattern, source).group(0)
-    #                                         # homogeniase to facebook
-    #                                         source = 'facebook'
-    #                                     except:
-    #                                         try:
-    #                                             re.search(tecent_pattern, source).group(0)
-    #                                             # homogeniase to tecent
-    #                                             source = 'tecent'
-    #                                         except:
-    #                                             try:
-    #                                                 re.search(twitter_pattern, source).group(0)
-    #                                                 # homogeniase to twitter
-    #                                                 source = 'twitter'
-    #                                             except:
-    #                                                 try:
-    #                                                     re.search(healthmap_pattern, source).group(0)
-    #                                                     # homogeniase to healthmap
-    #                                                     source = 'healthmap'
-    #                                                 except:
-    #                                                     try:
-    #                                                         re.search(flickr_pattern, source).group(0)
-    #                                                         # homogeniase to flickr
-    #                                                         source = 'flickr'
-    #                                                     except:
-    #                                                         try:
-    #                                                             re.search(wikiloc_pattern, source).group(0)
-    #                                                             # homogeniase to wikiloc
-    #                                                             source = 'wikiloc'
-    #                                                         except:
-    #                                                             try:
-    #                                                                 re.search(wikidata_pattern, source).group(0)
-    #                                                                 # homogeniase to wikidata
-    #                                                                 source = 'wikidata'
-    #                                                             except:
-    #                                                                 pass
-    #                 fixed_ugc_sources.append(source)
-    #         fixed_row = [fixed_ugc_sources, sdg_term, year]
-    #         fixed_rows.append(fixed_row)
-    #     fixed_rows = np.array(fixed_rows)
-    #     return fixed_rows
-
     rows = query_result_return(conn, "select ugc_source, query, source, date from literature where (decision_r_1 = '1' or decision_r_2 = '1') and subtype != 'Review';")
     rows = np.array([[row[0].lower().replace(' ', '').split(';'), row[1], row[2], row[3]] for row in rows])
     rows = np.array([[list(map(str.strip, row[0])), row[1], row[2], row[3]] for row in rows if row[1] is not None])
@@ -1144,15 +953,27 @@ def plot_ugc_sources_by_year():
             fig.add_trace(go.Bar(x=label_df['year'], y=label_df['count'], name=label, marker={'color': ugc_source_figure_color_dict[label]}))
 
     fig.update_layout(xaxis={'categoryorder': 'category descending', 'dtick': 1},
-                      legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01, font_size=14), font_size=30, xaxis_title='year', yaxis_title='count')
+                      legend=dict(
+                          yanchor="top",
+                          y=0.99,
+                          xanchor="left",
+                          x=0.01,
+                          font_size=14),
+                      font_size=30,
+                      xaxis_title='year',
+                      yaxis_title='count')
+
+    # rotate xaxis labels
+    fig.update_xaxes(tickangle=45)
+
     # barmode='stack',
     # fig.update_xaxes(categoryorder='category descending')
     fig.show()
 
     print('saving figures in different formats..')
-    fig.write_html(OUTPUT_HTML)
+    # fig.write_html(OUTPUT_HTML)
     # plotly.io.write_image(fig, format='png', file=OUTPUT_PNG, width=1900, height=800, engine='auto')
-    fig.write_image(OUTPUT_PNG)
+    # fig.write_image(OUTPUT_PNG)
     # fig.write_image(OUTPUT_SVG )
 
 def ugc_titles_per_target(TARGET='3.9'):
@@ -1232,6 +1053,7 @@ def plot_initial_query_treemap():
         margin=dict(t=50, l=25, r=25, b=25),
         font_size=20
     )
+
     fig.show()
     fig.write_html(os.path.join(r"C:\Users\mhartman\PycharmProjects\SLR_analysis\final_plots",
                                 "treemap_all_terms.html"))
