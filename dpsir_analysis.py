@@ -9,9 +9,7 @@ import os
 import pandas as pd
 from collections import defaultdict
 # plotting
-import plotly
 import plotly.express as px
-from plotly.subplots import make_subplots
 import plotly.graph_objs as go
 
 '''
@@ -263,7 +261,7 @@ def DPSIR_per_paper_type_stackedbar():
 def study_country_with_match_no_match_dist():
     '''
     visualise the distribution of areas that have been covered by scientific research to
-    potentially unravel a north- south hemisphere bias
+    potentially unravel a north-south hemisphere bias
 
     aggregate by continent:
 
@@ -340,18 +338,24 @@ def study_country_with_match_no_match_dist():
 
     df = pd.DataFrame(data_array, columns=columns)
 
-    fig = px.bar(df.sort_values(by='total', ascending=False), x="continent", y=["match", "no match"], title="Study areas by continent with indication if match with author origin exists")
+    fig = px.bar(df.sort_values(by='total', ascending=False), x="continent", y=["match", "no match"]) #title="Study areas by continent with indication if match with author origin exists"
 
     fig.update_layout(barmode='stack',
                       yaxis_title='count',
                       xaxis_title='continent of study area',
-                      font_size=20,
+                      font_size=25,
                       legend=dict(
-                          title=''
+                          title='',
+                          yanchor="top",
+                          y=0.99,
+                          xanchor="right",
+                          x=0.99
                       ))
     fig.show()
-    fig.write_html(os.path.join(r"C:\Users\mhartman\PycharmProjects\SLR_analysis\final_plots",
-                                "continent_w_author_match.html"))
+    # fig.write_html(os.path.join(r"C:\Users\mhartman\PycharmProjects\SLR_analysis\final_plots",
+    #                             "continent_w_author_match.html"))
+    fig.write_image(os.path.join(r"C:\Users\mhartman\PycharmProjects\SLR_analysis\final_plots",
+                                "continent_w_author_match.jpg"))
 
 
 def author_country_study_country_rel():
@@ -483,5 +487,4 @@ def dpsir_twitter_vs_cs():
 if __name__ == '__main__':
     # dpsir_twitter_vs_cs()
     study_country_with_match_no_match_dist()
-    # study_country_dist()
     # DPSIR_per_paper_type_sankeyplot()
