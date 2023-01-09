@@ -905,15 +905,6 @@ def plot_ugc_sources_by_year():
         return ugc_color_dict
     ugc_source_figure_color_dict = get_ugc_color(1)
 
-    # ugc_source_figure_color_dict = {
-    #     'flickr': color_pallet[0],
-    #     'citizen science': color_pallet[step],
-    #     'sina weibo': color_pallet[2*step],
-    #     'twitter': color_pallet[3*step],
-    #     'facebook': color_pallet[4*step],
-    #     'other': '#b3b3b3'# color_pallet[5*step]
-    # }
-
     df = pd.DataFrame(columns=['year', 'ugc_sources', 'count', 'color'])
     # append years and their top ugc sources as rows to df
     index = 0
@@ -958,7 +949,7 @@ def plot_ugc_sources_by_year():
                           y=0.99,
                           xanchor="left",
                           x=0.01,
-                          font_size=14),
+                          font_size=25),
                       font_size=30,
                       xaxis_title='year',
                       yaxis_title='count')
@@ -974,7 +965,6 @@ def plot_ugc_sources_by_year():
     # fig.write_html(OUTPUT_HTML)
     # plotly.io.write_image(fig, format='png', file=OUTPUT_PNG, width=1900, height=800, engine='auto')
     # fig.write_image(OUTPUT_PNG)
-    # fig.write_image(OUTPUT_SVG )
 
 def ugc_titles_per_target(TARGET='3.9'):
     '''
